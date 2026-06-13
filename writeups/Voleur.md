@@ -7,7 +7,6 @@ draft: false
 ---
 
 ![alt text](./images/{1EBAFD9A-277E-4549-8AFB-F1FDEB5ABDC7}.png)
-![](./images/{3801C76F-E805-4CF5-8C5F-3158E446D5EB}.png)
 ryan.naylor
 
 | Name        | Password                        |
