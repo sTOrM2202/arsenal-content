@@ -1,0 +1,18 @@
+# gitignore for arsenal-content repo
+# Outils / IDE
+.claude/
+.obsidian/
+.vscode/
+.idea/
+
+# Fichiers OS
+.DS_Store
+Thumbs.db
+
+# Éditeurs
+*.swp
+*~
+
+# Secrets éventuels
+.env
+.env.local
