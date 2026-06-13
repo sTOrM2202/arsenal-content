@@ -1,3 +1,11 @@
+---
+title: "Ma cheatsheet Ligolo-ng"
+description: "Les commandes pour la mise en place d'un pivot avec Ligolo-ng"
+date: 2026-02-19
+tags: ["cheatsheet", "tooling", "tunneling", "pivoting", "ligolo-ng"]
+draft: false
+---
+
 > New generation tool for reverse tunneling. Easy to use tool that use **TUN** interfaces instead of traditional **SOCKS** proxies.
 
 | **Machine name**       | **IP public network** | **IP internal network** | **IP internal network 2** |

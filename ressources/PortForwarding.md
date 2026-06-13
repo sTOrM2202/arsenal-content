@@ -1,3 +1,11 @@
+---
+title: "Ma cheatsheet port forwarding"
+description: "Les commandes pour la mise en place d'un pivot avec ssh"
+date: 2026-02-25
+tags: ["cheatsheet", "tooling", "tunneling", "pivoting", "ssh"]
+draft: false
+---
+
 ## Local Port forwarding
 - 🥷**Attacker IP**: 10.10.14.38
 - 💻**Remote host IP**: 10.10.15.130 & 10.10.16.130 (internal network)

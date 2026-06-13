@@ -1,3 +1,21 @@
+---
+title: "Ma cheatsheet Tmux"
+description: "Les commandes pour la mise en place d'un pivot avec Tmux"
+date: 2026-02-26
+tags: ["cheatsheet", "tmux", "terminal", "optimization", "rapidité", "productivité"]
+draft: false
+---
+# Configuration fichier Tmux (~/.tmux.conf)
+1. Fichier de configuration pour Tmux
+```bash
+# ~/.tmux.conf
+set-option -g default-shell /bin/zsh
+set -g mouse on
+```
+2. Relancer la configuration de Tmux
+```bash
+tmux source-file ~/.tmux.conf
+```
 ## Volets dans une fenêtre
 ### Créer et supprimer
 ```bash
