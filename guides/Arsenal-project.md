@@ -63,10 +63,10 @@ EXPOSE 80
       - `watchtower` : qui surveille le registre et redéploie le site
 5. **Créer deux workflows** : example: `build-and-push.yml` côté code (build de l'image + push GHCR), et `trigger-rebuild.yml` côté contenu (envoie un `repository_dispatch` au repo arsenal à chaque nouveau push de content).
 6. **Configure un `DISPATCH_TOKEN`** : Sur le repo `content`, crée un token Github:
-      6.1 [Personal access tokens](https://github.com/settings/personal-access-tokens) -> Fine-grained token -> Generate new token
-      6.2 Donne lui nom / durée d'expiration / repo `code` en accès / Permissions: Cherche `content` et coche puis change en `read and write`.
-      6.3 Ajoute le token dans les secrets du repo `content` (repo -> settings -> secrets & variables -> Actions -> Secrets -> New repo secret) sous le nom `DISPATCH_TOKEN` -> meme nom que dans le workflow `trigger-rebuild.yml`.
-      6.4 Rend le package GHCR public dans le repo `code` -> https://github.com/users/USERNAME/packages/container/REPO_NAME/settings 
+      - 6.1 [Personal access tokens](https://github.com/settings/personal-access-tokens) -> Fine-grained token -> Generate new token
+      - 6.2 Donne lui nom / durée d'expiration / repo `code` en accès / Permissions: Cherche `content` et coche puis change en `read and write`.
+      - 6.3 Ajoute le token dans les secrets du repo `content` (repo -> settings -> secrets & variables -> Actions -> Secrets -> New repo secret) sous le nom `DISPATCH_TOKEN` -> meme nom que dans le workflow `trigger-rebuild.yml`.
+      - 6.4 Rend le package GHCR public dans le repo `code` -> https://github.com/users/USERNAME/packages/container/REPO_NAME/settings 
 7. **Configure ton DNS et publie ton site** `docker compose up -d` (téléchargement de l'image depuis GHCR) + Configuration de Traefik pour le reverse proxy et le TLS automatique.
 
 ## Au quotidien
