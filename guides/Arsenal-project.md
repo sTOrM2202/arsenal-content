@@ -1,31 +1,24 @@
 ---
 title: "Arsenal : comment j'ai construit un wiki qui se déploie tout seul"
-description: "Retour d'expérience sur la création d'Arsenal — Astro, Docker, Traefik et GitHub Actions — avec le guide complet pour le refaire chez soi, pièges inclus."
+description: "Retour d'expérience sur la création d'Arsenal - Astro, Docker, Traefik et GitHub Actions - avec le guide complet pour le refaire chez soi."
 date: 2026-06-13
 tags: ["astro", "docker", "traefik", "ci-cd", "self-hosting", "automatisation", "guide"]
 draft: false
 ---
 
-J'ai construit **Arsenal**, le site sur lequel tu lis ces lignes. C'est ma base de connaissances offensive : projets, articles, writeups et ressources. J'avais déjà un wiki de notes rapides et un portfolio, mais il me manquait un endroit pour recenser proprement ce que je produis, **facilement mis à jour**.
+> L'objectif est de construire un wiki personnel, facile à maintenir, qui se déploie automatiquement à chaque push. (Easy update)
+
+J'ai construit **Arsenal**, le site sur lequel tu lis ces lignes. C'est ma base de connaissances offensive : projets, articles, writeups et ressources.
 
 L'idée directrice tient en une phrase : *j'écris en Markdown, je versionne sur Git, et le site se met à jour tout seul à chaque push.* Aucune intervention manuelle sur le serveur, jamais. Voici comment ça marche, et comment le refaire pour toi.
 
 ## La stack, et pourquoi
 
-- **Astro** — génération statique, *content collections* typées, HTML pur. Pour un site de contenu, c'est supérieur à du React : rapide, excellent SEO, zéro JS par défaut.
-- **Docker multi-stage** — un stage Node qui build le site, puis une image `nginx:alpine` de quelques Mo qui sert le HTML.
-- **Traefik** — reverse proxy + TLS automatique (déjà en place sur mon serveur).
-- **Watchtower** — redéploiement automatique quand une nouvelle image arrive.
-- **GitHub Actions + GHCR** — la CI qui construit l'image et le registre qui la stocke.
-
-## L'architecture : deux repos
-
-C'est le choix central. Je sépare le code du contenu :
-
-- **`arsenal`** *(privé)* — le projet Astro + toute l'infra (Dockerfile, compose, workflow CI).
-- **`arsenal-content`** *(public)* — uniquement le Markdown, rangé par catégorie (`articles/`, `writeups/`, `guides/`, `ressources/`, `projets/`, `etudes/`).
-
-Pourquoi le contenu public ? Ça me donne un backup portable de mes notes, la possibilité que des gens proposent des corrections par PR, et de la transparence. Le code source, lui, reste privé. L'image Docker ne contient que le HTML déjà buildé, donc la rendre publique n'expose rien de plus que le site lui-même.
+- **Astro** - génération statique, *content collections* typées, HTML pur. Pour un site de contenu, c'est supérieur à du React : rapide, excellent SEO, zéro JS par défaut.
+- **Docker multi-stage** - un stage Node qui build le site, puis une image `nginx:alpine` de quelques Mo qui sert le HTML.
+- **Traefik** - reverse proxy + TLS automatique (déjà en place sur mon serveur).
+- **Watchtower** - redéploiement automatique quand une nouvelle image arrive.
+- **GitHub Actions + GHCR** - la CI qui construit l'image et le registre qui la stocke.
 
 ## Le pipeline
 
@@ -48,15 +41,34 @@ Traefik → arsenal.louispernet.app
 
 ## Le refaire chez toi, étape par étape
 
-1. **Crée les deux repos** : `arsenal` (privé), `arsenal-content` (public).
-2. **Monte le projet Astro** avec des *content collections* et un schéma de validation (Zod). Chaque fichier Markdown a un frontmatter typé ; si un champ obligatoire manque, le build échoue plutôt que de publier une entrée cassée.
-3. **Écris un Dockerfile multi-stage** : build Node, puis `nginx:alpine` qui sert le `dist/`.
-4. **Rédige le `docker-compose.yml`** avec les labels Traefik et un Watchtower *scopé* (pour qu'il ne surveille que ce projet, pas tous tes conteneurs).
-5. **Mets deux workflows** : `build-and-push` côté code (build + push GHCR), et `trigger-rebuild` côté contenu (envoie un `repository_dispatch` au repo de code à chaque push).
-6. **Configure un `DISPATCH_TOKEN`** : un PAT *fine-grained* avec la permission *Contents: write* sur le repo de code, stocké en secret dans le repo de contenu. C'est lui qui autorise le contenu à réveiller le build.
-7. **Rends le package GHCR public** après le premier build (sinon ton serveur ne peut pas le tirer sans authentification).
-8. **Pointe ton DNS** vers le serveur, puis `docker compose up -d`.
+1. **Crée les deux repos**: Un pour le contenu et l'autre pour le code de ton application web.
+2. **Monte le projet Astro** Créer ton projet Astro avec une DA qui te correspond.
+3. **Créer ton docker file** : Exemple de Dockerfile:
+```dockerfile
+# -- Astro --
+FROM node:20-alpine AS build
+WORKDIR /app
+COPY package.json ./
+RUN npm run ci
+COPY . .
+RUN npm run build
+# -- Nginx --
+FROM nginx:alpine
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /app/dist /usr/share/nginx/html
+EXPOSE 80
+```
+4. **Rédige le `docker-compose.yml`**: 2 containers → 
+      - `arsenal` : ton site, qui tire l'image depuis GHCR.
+      - `watchtower` : qui surveille le registre et redéploie le site
+5. **Créer deux workflows** : example: `build-and-push.yml` côté code (build de l'image + push GHCR), et `trigger-rebuild.yml` côté contenu (envoie un `repository_dispatch` au repo arsenal à chaque nouveau push de content).
+6. **Configure un `DISPATCH_TOKEN`** : Sur le repo `content`, crée un token Github:
+      6.1 [Personal access tokens](https://github.com/settings/personal-access-tokens) -> Fine-grained token -> Generate new token
+      6.2 Donne lui nom / durée d'expiration / repo `code` en accès / Permissions: Cherche `content` et coche puis change en `read and write`.
+      6.3 Ajoute le token dans les secrets du repo `content` (repo -> settings -> secrets & variables -> Actions -> Secrets -> New repo secret) sous le nom `DISPATCH_TOKEN` -> meme nom que dans le workflow `trigger-rebuild.yml`.
+      6.4 Rend le package GHCR public dans le repo `code` -> https://github.com/users/USERNAME/packages/container/REPO_NAME/settings 
+7. **Configure ton DNS et publie ton site** `docker compose up -d` (téléchargement de l'image depuis GHCR) + Configuration de Traefik pour le reverse proxy et le TLS automatique.
 
 ## Au quotidien
 
-Le résultat, c'est exactement ce que je voulais : j'écris un fichier `.md`, je fais `git push`, et environ trois minutes plus tard c'est en ligne. Pas de SSH, pas de build manuel, pas de copie de fichiers. La maintenance des dépendances suit la même logique — je bump une version, je push le repo de code, la CI rebuild.
+Le résultat, c'est exactement ce que je voulais : j'écris un fichier `.md`, je fais `git push`, et environ trois minutes plus tard c'est en ligne. Pas de SSH, pas de build manuel, pas de copie de fichiers. La maintenance des dépendances suit la même logique - je bump une version, je push le repo de code, la CI rebuild.
