@@ -5,7 +5,7 @@ date: 2026-02-25
 tags: ["certifications", "pentest", "hackthebox", "cpts", "red-team"]
 draft: false
 ---
-![CPTS certification](/images/cpts-louispernet.png)
+![CPTS certification](./images/cpts-louispernet.png)
 
 ## Intro
 
