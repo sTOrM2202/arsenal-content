@@ -1,3 +1,10 @@
+---
+title: "What is CSRF attack"
+description: "Explication et compréhension"
+date: 2026-07-02
+tags: ["Attack", "csrf", "client",]
+draft: false
+---
 https://portswigger.net/web-security/csrf
 # 1. What is CSRF
 **CSRF:** For *Cross-Site Request Forgery*, this attack allows an attacker to induce users to perform action that they do not intend to perform
@@ -77,6 +84,6 @@ Priority: u=0, i
 email=test%40test.fr
 ```
 Host our payload on attacker server:
-![CSRF payload](./images/Pasted image 20260701171459.png])
+![CSRF payload](./images/Pasted image 20260701171459.png)
 Then send it to the victim:
-![CSRF Gongrats](./images/Pasted image 20260701171537.png])
+![CSRF Gongrats](./images/Pasted image 20260701171537.png)
