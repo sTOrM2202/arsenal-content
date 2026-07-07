@@ -6,7 +6,7 @@ tags: ["cheatsheet", "tooling", "zsh", "shell", "ssh"]
 draft: false
 ---
 
-![OMZ](./images/Pasted image 20260707142806.png)
+![OMZ](./images/omz)
 
 ```bash
 # Optionnel
