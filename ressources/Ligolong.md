@@ -52,7 +52,7 @@ ip link set ligolo-double up
 # 3. Configure the agent
 ./agent.exe -connect 172.16.5.15:11601 -ignore-cert
 ```
-![Double pivot setup](./images/Pasted image 20260124124726.png)
+![Double pivot setup](./images/ligolo.png)
 ```bash
 # 4. Start the tunnel and add route
 [Agent : webadmin@inlanefreight.local] » session # choose the second pivot connection
