@@ -8,7 +8,7 @@ draft: false
 https://portswigger.net/web-security/csrf
 # 1. What is CSRF
 **CSRF:** For *Cross-Site Request Forgery*, this attack allows an attacker to induce users to perform action that they do not intend to perform
-![CSRF schema](./images/csrf1)
+![CSRF schema](./images/csrf1.png)
 # 2. Impact of this attack
 In a successful **CSRF attack**, an attacker causes the victim user to **carry out an action unintentionally**. For example change an **email address** on his account, or change **his password**...
 Depending of the action, an attacker can gain a full access control over the user's account. If the user have administrative rights on the application the attacker might be able to take full control over this application.
@@ -84,6 +84,6 @@ Priority: u=0, i
 email=test%40test.fr
 ```
 Host our payload on attacker server:
-![CSRF payload](./images/csrf2)
+![CSRF payload](./images/csrf2.png)
 Then send it to the victim:
-![CSRF Gongrats](./images/csrf3)
+![CSRF Gongrats](./images/csrf3.png)
