@@ -21,7 +21,7 @@ oh-my-posh font install # if error -> disabled the VPN
 -> Then Choose your font style
 ```
 3. Select the font on the terminal style settings
-![](images/{0AB73586-7814-4A20-9EB1-0F9306E85186}.png)
+![Font selection](images/{0AB73586-7814-4A20-9EB1-0F9306E85186}.png)
 4. Choose your prompt style
 https://ohmyposh.dev/docs/themes
 5. Configure for permanent usage
