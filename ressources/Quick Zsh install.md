@@ -1,3 +1,11 @@
+---
+title: "Quick install ZSH"
+description: "Les commandes pour l'installation de ZSH + OhMyZsh"
+date: 2026-07-07
+tags: ["cheatsheet", "tooling", "zsh", "shell", "ssh"]
+draft: false
+---
+
 ![OMZ](./images/Pasted image 20260707142806.png])
 
 ```bash
