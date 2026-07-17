@@ -8,12 +8,16 @@ draft: false
 # Configuration fichier Tmux (~/.tmux.conf)
 1. Fichier de configuration pour Tmux
 ```bash
+nano ~/.tmux.conf
+```
+```bash
 # ~/.tmux.conf
 set-option -g default-shell /bin/zsh
 set -g mouse on
 ```
 2. Relancer la configuration de Tmux
 ```bash
+tmux # Lancer tmux
 tmux source-file ~/.tmux.conf
 ```
 ## Volets dans une fenêtre
