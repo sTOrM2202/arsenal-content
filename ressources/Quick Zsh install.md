@@ -19,3 +19,4 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 # 3. Set as default shell for current user
 sudo chsh -s $(which zsh) $USER
 ```
+Choose your Zsh [theme](https://github.com/ohmyzsh/ohmyzsh/wiki/themes)
